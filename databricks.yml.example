@@ -1,0 +1,50 @@
+# =============================================================================
+# Databricks Asset Bundle Configuration — TEMPLATE
+# =============================================================================
+# This is the EXAMPLE file. To use it:
+#
+#   1. Copy this file:
+#      cp databricks.yml.example databricks.yml
+#
+#   2. Replace <your-workspace> with your actual Databricks workspace URL
+#
+#   3. Deploy:
+#      databricks bundle validate -t dev
+#      databricks bundle deploy -t dev
+#      databricks bundle run my_etl_job -t dev
+#
+# Note: databricks.yml is gitignored to protect your workspace URL.
+# Docs: https://docs.databricks.com/dev-tools/bundles/index.html
+# =============================================================================
+
+bundle:
+  name: airflow_databricks_demo
+
+workspace:
+  host: https://<your-workspace>.cloud.databricks.com   # ← REPLACE with your workspace URL
+
+resources:
+  jobs:
+    my_etl_job:
+      name: "my_etl_job"                                 # Must match JOB_NAME in dags/trigger_databricks_job.py
+      description: "Sample ETL job deployed via Databricks Asset Bundle"
+      tags:
+        project: "airflow-databricks-demo"
+        managed_by: "dab"
+      max_concurrent_runs: 1                              # Prevent parallel runs of the same job
+      tasks:
+        - task_key: "run_sample_notebook"
+          description: "Run the sample ETL notebook"
+          notebook_task:
+            notebook_path: ./src/sample_notebook.py       # Relative to bundle root
+            base_parameters:
+              env: "dev"                                   # Overridden by Airflow notebook_params
+            source: WORKSPACE
+
+targets:
+  dev:
+    mode: development     # Uses personal prefix, e.g. [dev username] my_etl_job
+    default: true
+
+  prod:
+    mode: production      # Uses exact job name: my_etl_job

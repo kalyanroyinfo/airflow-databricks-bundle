@@ -14,6 +14,8 @@ airflow_home/
 # Databricks
 .databricks/
 .bundle/
+# Real config with actual workspace URL — use databricks.yml.example as template
+databricks.yml
 
 # Environment
 .env

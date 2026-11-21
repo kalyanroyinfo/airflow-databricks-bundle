@@ -1,4 +1,19 @@
 # Databricks notebook source
+# =============================================================================
+# sample_notebook.py — Sample ETL Notebook
+# =============================================================================
+# Demonstrates a simple ETL pipeline deployed via Databricks Asset Bundles
+# and triggered by Apache Airflow.
+#
+# Parameters (passed from Airflow via notebook_params):
+#   env      — Target environment (dev/prod). Default: "dev"
+#   run_date — Execution date in YYYY-MM-DD format. Default: "2026-01-01"
+#
+# Steps:
+#   1. Create sample data
+#   2. Transform data (add tax, timestamp, environment)
+#   3. Print summary and exit with SUCCESS
+# =============================================================================
 # MAGIC %md
 # MAGIC # Sample ETL Notebook
 # MAGIC This notebook is deployed via **Databricks Asset Bundles** and triggered by **Apache Airflow**.
@@ -17,15 +32,16 @@ print(f"Running ETL for environment: {env}, date: {run_date}")
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC ## Step 1: Read Sample Data
+# MAGIC ## Step 1: Create Sample Data
 
 # COMMAND ----------
 
-# Create sample data
+from pyspark.sql import Row
+
 data = [
-    {"id": 1, "name": "Alice", "amount": 100.0, "date": run_date},
-    {"id": 2, "name": "Bob", "amount": 200.0, "date": run_date},
-    {"id": 3, "name": "Charlie", "amount": 150.0, "date": run_date},
+    Row(id=1, name="Alice", amount=100.0, date=run_date),
+    Row(id=2, name="Bob", amount=200.0, date=run_date),
+    Row(id=3, name="Charlie", amount=150.0, date=run_date),
 ]
 
 df = spark.createDataFrame(data)
@@ -67,15 +83,5 @@ print(f"   Run date: {run_date}")
 
 # COMMAND ----------
 
-# Optionally write to a table (uncomment when ready)
-# catalog = "my_catalog"
-# schema = "my_schema"
-# table = f"{catalog}.{schema}.processed_data"
-#
-# df_transformed.write.mode("append").saveAsTable(table)
-# print(f"Data written to {table}")
-
-# COMMAND ----------
-
-# Return success for Airflow
+# Return success
 dbutils.notebook.exit("SUCCESS")

@@ -1,5 +1,9 @@
 # Airflow + Databricks Asset Bundles — Step-by-Step Guide
 
+![Python](https://img.shields.io/badge/Python-3.9--3.12-blue)
+![Airflow](https://img.shields.io/badge/Airflow-2.10.4-017CEE)
+![License](https://img.shields.io/badge/License-MIT-green)
+
 Run Databricks jobs from a locally installed Apache Airflow using Databricks Asset Bundles (DABs).
 
 ## Architecture
@@ -130,7 +134,16 @@ token = dapi_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
 ## Step 7: Configure `databricks.yml` (Asset Bundle)
 
-Edit [`databricks.yml`](databricks.yml) and replace the placeholders:
+Copy the template and edit it with your workspace URL:
+
+```bash
+cp databricks.yml.example databricks.yml
+```
+
+Edit `databricks.yml` and replace the placeholders:
+
+> ⚠️ **Important**: `databricks.yml` is gitignored to protect your workspace URL.
+> Only `databricks.yml.example` (with placeholders) is committed to the repository.
 
 ```yaml
 bundle:
@@ -290,20 +303,24 @@ airflow tasks logs trigger_databricks_job run_my_etl_job <run_id>
 ```
 airflow-databricks-bundle/
 ├── README.md                  # This guide
-├── databricks.yml             # DAB — defines the Databricks job
+├── LICENSE                    # MIT License
+├── databricks.yml             # DAB config — local (gitignored)
+├── databricks.yml.example     # DAB config — template for GitHub
 ├── requirements.txt           # Python dependencies
 ├── .env.example               # Environment variables template
 ├── .gitignore
 ├── src/
 │   └── sample_notebook.py     # Sample Databricks notebook
 ├── dags/
+│   ├── README.md              # DAGs documentation
 │   ├── trigger_databricks_job.py          # DAG: trigger existing job
 │   └── deploy_and_run_databricks.py       # DAG: deploy bundle + run
 ├── scripts/
 │   ├── setup.sh               # One-shot setup script
 │   └── start_airflow.sh       # Start Airflow services
 └── config/
-    └── airflow_variables.json # Optional Airflow variables
+    ├── README.md              # Config directory documentation
+    └── airflow_variables.json # Airflow variables template
 ```
 
 ---
