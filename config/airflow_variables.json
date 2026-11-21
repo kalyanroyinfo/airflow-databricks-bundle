@@ -1,0 +1,6 @@
+{
+    "databricks_workspace_host": "https://<your-workspace>.cloud.databricks.com",
+    "databricks_job_name": "my_etl_job",
+    "databricks_target": "dev",
+    "etl_default_env": "dev"
+}

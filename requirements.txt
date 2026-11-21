@@ -1,0 +1,19 @@
+# ============================================
+# Airflow + Databricks Dependencies
+# ============================================
+
+# Apache Airflow (pin to a specific version)
+apache-airflow==2.10.4
+
+# Databricks provider for Airflow
+apache-airflow-providers-databricks>=7.0.0
+
+# Databricks SDK (used by the provider)
+databricks-sdk>=0.30.0
+
+# ============================================
+# Optional: Development utilities
+# ============================================
+# python-dotenv>=1.0.0
+# black>=24.0.0
+# ruff>=0.5.0
